@@ -1,0 +1,12 @@
+[package]
+name = "passwordManagerBackend"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+clap = { version = "4.4", features = ["derive"] }
+aes-gcm = "0.10"  # AES-256-GCM encryption
+rand = "0.8"      # Random number generation
+hex = "0.4"       # Encoding keys/nonces as hex strings
+dirs = "5.0"
+dotenvy = "0.15"
