@@ -5,6 +5,7 @@ edition = "2021"
 
 [dependencies]
 clap = { version = "4.4", features = ["derive"] }
+argon2 = "0.5"
 aes-gcm = "0.10"  # AES-256-GCM encryption
 rand = "0.8"      # Random number generation
 hex = "0.4"       # Encoding keys/nonces as hex strings
