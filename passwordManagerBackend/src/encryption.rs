@@ -25,7 +25,6 @@ pub fn encrypt_data(key: &[u8; 32], plaintext: &str) -> (String, String) {
     let ciphertext = cipher.encrypt(Nonce::from_slice(&nonce), plaintext.as_bytes())
         .expect("encryption failed");
     let encrypted_hex = hex::encode(ciphertext);
-    
     (nonce_str, encrypted_hex)
 }
 

@@ -33,6 +33,13 @@ fn main() {
             println!("Adding the credentials to the service:{} {}",nonce_service,service_en);
             println!("Adding the Username:{} {}",nonce_user,username_en);
             println!("Adding the password:{} {}",nonce_pass,password_en);
+            let username=decrypt_data(&key,&nonce_user, &username_en);
+            let password=decrypt_data(&key,&nonce_pass, &password_en);
+            let service=decrypt_data(&key,&nonce_service, &service_en);
+            println!("Adding the credentials to the service:{}",service);
+            println!("Adding the Username:{} ",username);
+            println!("Adding the password:{} ",password);
+
         }
 
          Commands::Get { service } => {
