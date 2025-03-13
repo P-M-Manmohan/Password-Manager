@@ -46,7 +46,7 @@ fn load_salt_from_file() -> Option<String> {
     }
 }
 
-pub fn check_and_set_salt_as_env() {
+pub fn check_and_set_salt_as_env() -> String{
     let salt: String;
     dotenvy::dotenv().ok();
     
@@ -65,10 +65,13 @@ pub fn check_and_set_salt_as_env() {
             .arg(&command)
             .status()
             .expect("Failed to update shell profile");
-
-            println!("🔒 Environment variable PASSWORD_MANAGER_SALT set.");
     }else{
-            println!("✅ Environment variable PASSWORD_MANAGER_SALT already exists.");
+        salt = match env::var("PASSWORD_MANAGER_SALT") {
+            Ok(salt) => salt,
+            _ => " ".to_string()
+        }
     }
+
+    salt
 }
 
