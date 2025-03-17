@@ -1,0 +1,21 @@
+password-manager/
+│── src/
+│   │── main.rs           # Entry point for the CLI
+│   │── encryption.rs     # Handles encryption/decryption
+│   │── storage.rs        # Manages password storage (database or file)
+│   │── cli.rs            # CLI commands and argument parsing
+│   │── config.rs         # Configuration handling (e.g., key storage)
+│── Cargo.toml            # Rust dependencies
+│── README.md             # Project documentation
+│── .gitignore            # Ignore sensitive files
+
+
+
+
+Simple password manager that can be used in my daily life.
+
+generate hard to crack passwords and autofil on both browser and application logins
+
+have to learn to stress test password manager to look for vulnerabilities.
+
+have to be able to access all the passwords stored in it using a single master password.

@@ -1,4 +1,5 @@
 use aes_gcm::aead::Aead;
+use aes_gcm::aead;
 use aes_gcm::{Aes256Gcm, Key, aead::KeyInit, Nonce};
 use argon2::Params;
 use argon2::{password_hash::SaltString, Argon2, PasswordHasher};
@@ -21,20 +22,24 @@ pub fn encrypt_data(key: &[u8; 32], plaintext: &str) -> (String, String) {
 
     let nonce = rand::random::<[u8; 12]>();
     let nonce_str = hex::encode(&nonce);
-
     let ciphertext = cipher.encrypt(Nonce::from_slice(&nonce), plaintext.as_bytes())
         .expect("encryption failed");
     let encrypted_hex = hex::encode(ciphertext);
     (nonce_str, encrypted_hex)
 }
 
-pub fn decrypt_data(key: &[u8; 32], nonce_hex: &str, encrypted_hex: &str) -> String {
+pub fn decrypt_data(key: &[u8; 32], nonce_hex: &str, encrypted_hex: &str) -> Result<String,aead::Error> {
     let cipher = Aes256Gcm::new(Key::<Aes256Gcm>::from_slice(key));
+    let nonce= nonce_hex.trim_matches('"').to_string();
+    let encrypted = encrypted_hex.trim_matches('"').to_string();
 
-    let nonce_bytes = hex::decode(nonce_hex).expect("Invalid nonce hex");
-    let ciphertext_bytes = hex::decode(encrypted_hex).expect("Invalid encrypted_hex");
 
-    let plaintext = cipher.decrypt(Nonce::from_slice(&nonce_bytes), ciphertext_bytes.as_ref())
-        .expect("failed to decrypt data");
-    String::from_utf8(plaintext).expect("failed to decode decrypted text")
+    let nonce_bytes = hex::decode(&nonce).expect("Invalid nonce hex");
+    let ciphertext_bytes = hex::decode(encrypted).expect("Invalid encrypted_hex");
+
+    let plaintext = match cipher.decrypt(Nonce::from_slice(&nonce_bytes), ciphertext_bytes.as_ref()){
+        Ok(plaintext) => plaintext,
+        Err(e) => return Err(e),
+    };
+    Ok(String::from_utf8(plaintext).expect("failed to decode decrypted text"))
 }

@@ -4,6 +4,8 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
+sqlx = { version = "0.7", features = ["postgres", "runtime-tokio-native-tls"] }
+tokio = { version = "1", features = ["full"] }
 clap = { version = "4.4", features = ["derive"] }
 rpassword = "7.2"
 argon2 = "0.5"
@@ -11,4 +13,8 @@ aes-gcm = "0.10"  # AES-256-GCM encryption
 rand = "0.8"      # Random number generation
 hex = "0.4"       # Encoding keys/nonces as hex strings
 dirs = "5.0"
+dotenv = "0.15"
 dotenvy = "0.15"
+serde = "1.0.219"
+serde_json = "1.0"
+arboard = "3.2"
