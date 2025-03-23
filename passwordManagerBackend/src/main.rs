@@ -4,6 +4,7 @@ mod salt;
 mod database;
 mod queries;
 mod models;
+mod clipboard;
 
 use clap::Parser;
 use cli::{Commands, Cli};
@@ -11,6 +12,7 @@ use queries::{add_password, get_credentials, delete_credentials};
 use salt::check_and_set_salt_as_env;
 use encryption::{encrypt_data,decrypt_data,derive_key};
 use database::{init_db_pool,DbPool};
+use clipboard::copy_to_clipboard;
 use rpassword::read_password;
 
 
@@ -83,7 +85,7 @@ async fn main() {
                         return;
                     }
             };
-                println!("password : {}", password_de);
+                let _= copy_to_clipboard(&password_de);
                 println!("username : {}", username_de );
             }
 
