@@ -10,6 +10,9 @@ pub struct Cli {
 
 #[derive(Subcommand)]
 pub enum Commands {
+
+    // List all services
+    List ,
     //Add password
     Add {
         #[arg(short, long)]

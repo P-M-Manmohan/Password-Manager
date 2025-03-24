@@ -8,7 +8,7 @@ mod clipboard;
 
 use clap::Parser;
 use cli::{Commands, Cli};
-use queries::{add_password, get_credentials, delete_credentials};
+use queries::{add_password, delete_credentials, get_credentials, list_services};
 use salt::check_and_set_salt_as_env;
 use encryption::{encrypt_data,decrypt_data,derive_key};
 use database::{init_db_pool,DbPool};
@@ -32,6 +32,27 @@ async fn main() {
     let username_en: String;
     let password_en: String;
     match args.command {
+
+        Commands::List{} => {
+            let response = list_services(db_pool).await;
+            match response {
+                Ok(res) => {
+                    if let Some(array) = res.as_array() {
+                        let services : Vec<&str> = array
+                            .iter()
+                            .filter_map(|obj| obj.get("service")?.as_str())
+                            .collect();
+                        for service in services {
+                            println!("{}", service);
+                        }
+                    }
+                },
+                Err(err) => {
+                    println!("{}",err);
+                }
+            }
+        }
+
         Commands::Add {service,username,password} => {
             (nonce_user,username_en)=encrypt_data(&key, &username);
             (nonce_pass,password_en)=encrypt_data(&key, &password);

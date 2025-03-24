@@ -1,5 +1,25 @@
 use sqlx::{query,PgPool};
-use crate::models::credentials::Credentials;
+use crate::models::credentials::{Services, Credentials};
+
+pub async fn list_services(
+    db_pool: PgPool,
+) -> Result<serde_json::Value, String> {
+    let response = sqlx::query_as::<_,Services>("SELECT service FROM passwords")
+    .fetch_all(&db_pool)
+    .await;
+
+    match response{
+        Ok(res) =>{ match serde_json::to_value(res){
+                Ok(out) => Ok(out),
+                Err(err) => Err(format!("json error {}", err)),
+            }
+        }
+        Err(err) => {
+            Err(format!("database error {}",err))
+        }
+    }
+
+}
 
 pub async fn add_password(
     db_pool: PgPool,

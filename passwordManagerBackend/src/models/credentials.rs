@@ -10,3 +10,8 @@ pub struct Credentials{
     pub nonce_user: String,
     pub nonce_pass: String,
 }
+
+#[derive(Serialize, Deserialize, FromRow, Debug)]
+pub struct Services{
+    pub service: String,
+}
